@@ -1,27 +1,46 @@
-containers:
-  - name: dressshop-container
-    image: saranjr/dress-shop-backend:latest
-    imagePullPolicy: Always
-    ports:
-      - containerPort: 8080
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dressshop-deployment
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: dressshop
+  template:
+    metadata:
+      labels:
+        app: dressshop
+    spec:
+      containers:
+        - name: dressshop-container
+          image: saranjr/dress-shop-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
 
-    startupProbe:
-      httpGet:
-        path: /actuator/health
-        port: 8080
-      failureThreshold: 30
-      periodSeconds: 5
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 5
 
-    readinessProbe:
-      httpGet:
-        path: /actuator/health
-        port: 8080
-      initialDelaySeconds: 20
-      periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 5
 
-    livenessProbe:
-      httpGet:
-        path: /actuator/health
-        port: 8080
-      initialDelaySeconds: 60
-      periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 10
