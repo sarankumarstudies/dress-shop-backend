@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: dressshop-container
-          image: sarankumarstudies/dress-shop-backend:1
+          image: saranjr/dress-shop-backend:1
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
